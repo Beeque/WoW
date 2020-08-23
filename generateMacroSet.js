@@ -12,6 +12,7 @@ if ( args[1] ) { cls += '-' + args[1].toLowerCase(); }
 new Magic ( 'talents' );
 new Magic ( 'pvp-talents' );
 new Magic ( 'specialization-abilities' );
+new Magic ( 'abilities' );
 
 function Magic( type )
 {
@@ -29,7 +30,13 @@ function Magic( type )
 	{
 		if ( ! arr.filter ( x => x === r.name ).length )
 		{
-			arr.push ( r.name );
+			if ( r.name.indexOf("Portal:") < 0 )
+			{
+				if ( r.name.indexOf("Teleport:") < 0 )
+				{
+					arr.push ( r.name );
+				}
+			}
 		}
 	});
 
@@ -42,9 +49,9 @@ function Magic( type )
 		let output = '<?xml version="1.0" encoding="utf-8"?><Box xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><ObjectType>ISBoxer_Toolkit.Configs.WoWMacroSet</ObjectType><SerializedObject>&lt;?xml version="1.0" encoding="utf-8"?&gt;&lt;WoWMacroSet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;&lt;Name&gt;' + cls + '&lt;/Name&gt;&lt;Description&gt;generated with Beeq\'s Ultimate Macro Set Generator v' + version + '&lt;/Description&gt;&lt;WoWMacros&gt;';
 		arr.forEach ( function ( ability )
 		{
-			output += '&lt;WoWMacro&gt;&lt;MacroCommands&gt;/cast [nochanneling] ' + ability + '&lt;/MacroCommands&gt;&lt;ColloquialName&gt;' + ability + '&lt;/ColloquialName&gt;&lt;Combo&gt;&lt;Combo&gt;BLABLABLA&lt;/Combo&gt;';
+			output += '&lt;WoWMacro&gt;&lt;MacroCommands&gt;/cast [nochanneling] ' + ability + '&lt;/MacroCommands&gt;&lt;ColloquialName&gt;' + ability + '&lt;/ColloquialName&gt;&lt;Combo&gt;&lt;Combo&gt;&lt;/Combo&gt;';
 			output += '&lt;Modifiers&gt;' + C.modifiers() + '&lt;/Modifiers&gt;';
-			output += '&lt;Key&gt;&lt;Key&gt;BLABLABLA&lt;/Key&gt;&lt;Code&gt;' + C.keyCode() + '&lt;/Code&gt;&lt;/Key&gt;&lt;/Combo&gt;&lt;AllowCustomModifiers /&gt;&lt;/WoWMacro&gt;';
+			output += '&lt;Key&gt;&lt;Key&gt;&lt;/Key&gt;&lt;Code&gt;' + C.keyCode() + '&lt;/Code&gt;&lt;/Key&gt;&lt;/Combo&gt;&lt;AllowCustomModifiers /&gt;&lt;/WoWMacro&gt;';
 			C.nextKey();
 		});
 		output += '&lt;/WoWMacros&gt;&lt;/WoWMacroSet&gt;</SerializedObject></Box>';
@@ -115,6 +122,7 @@ function Carousel()
 			case 3: return 'Shift Alt';
 			case 4: return 'Alt';
 			case 5: return 'Shift';
+			// case 6: return 'Ctrl Shift Alt'; // enable only when emergency
 		}
 	}
 }
