@@ -1,7 +1,8 @@
 // usage example:
 // node .\generateMacroSet.js Demon Hunter > blablahh.txt
 
-const version = '1.00';
+const debug = 0;
+const version = '1.01';
 const axios = require('axios');
 var tasks = 0;
 var arr = [];
@@ -11,13 +12,21 @@ if ( args[1] ) { cls += '-' + args[1].toLowerCase(); }
 
 new Magic ( 'talents' );
 new Magic ( 'pvp-talents' );
-new Magic ( 'specialization-abilities' );
+new Magic ( 'specialization' );
 new Magic ( 'abilities' );
+new Magic ( 'covenant-abilities' );
+new Magic ( 'anima-powers' );
 
 function Magic( type )
 {
 	++tasks;
-	axios.get('https://www.wowhead.com/' + cls + '-' + type + '?filter=50;2;0#0+1+20' ).then( function ( response ) {
+	let url = 'https://www.wowhead.com/spells/' + type + '/' + cls + '?filter=50;2;0#0+1+20';
+	if ( debug )
+	{
+		console.log ( url );
+	}
+
+	axios.get( url ).then( function ( response ) {
 
 	let res = response.data;
 	res = res.split('var listviewspells =')[1];
@@ -25,6 +34,16 @@ function Magic( type )
 	res = res.trim().slice(0,-1);
 	res = res.replace(/popularity/g,'"popularity"');
 	res = res.replace(/frommerge/g,'"frommerge"');
+	res = res.replace(/"quality"/g,'quality');
+	res = res.replace(/quality/g,'"quality"');
+	
+
+	if ( debug )
+	{
+		console.log ( res );
+		console.log ( '--------------------------------------------------------------------------------------------------' );
+	}
+
 
 	JSON.parse ( res ).forEach ( function ( r )
 	{
@@ -122,7 +141,7 @@ function Carousel()
 			case 3: return 'Shift Alt';
 			case 4: return 'Alt';
 			case 5: return 'Shift';
-			// case 6: return 'Ctrl Shift Alt'; // enable only when emergency
+			case 6: return 'Ctrl Shift Alt';
 		}
 	}
 }
