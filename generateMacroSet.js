@@ -143,7 +143,7 @@ function Carousel()
 		++self.keyIndex;
 
 		if ( self.keyCode() == 339 && self.modIndex == 2 ) { ++self.keyIndex; } // skip Ctrl+Alt+Del
-		if ( self.keyCode() == 339 && self.modIndex == 6 ) { ++self.keyIndex; } // skip Ctrl+Shift+Alt+Del
+		// if ( self.keyCode() == 339 && self.modIndex == 6 ) { ++self.keyIndex; } // skip Ctrl+Shift+Alt+Del
 
 		self.keyIndex = self.keyIndex % self.keys.length;
 		if ( self.keyIndex == 0 ) { ++self.modIndex }
