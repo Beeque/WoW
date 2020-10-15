@@ -1,8 +1,17 @@
-// usage example:
-// node .\generateMacroSet.js Demon Hunter > blablahh.txt
+/*
+	Beeq's Ultimate Macro Set Generator
+	usage example:
+	node .\generateMacroSet.js Demon Hunter > blablahh.txt
+
+	Changelog
+	1.01 -	added searches for Covenant Abilities and Anima Powers
+	1.02 -	added various key codes ( pg up, pg dn, home, end, insert. delete, f1-f9 ) for not running out modifiers
+		added exclamation marks into the macros. /cast Greater Invisibility -> /cast !Greater Invisibility
+*/
+
+const version = '1.02';
 
 const debug = 0;
-const version = '1.01';
 const axios = require('axios');
 var tasks = 0;
 var arr = [];
@@ -65,10 +74,10 @@ function Magic( type )
 		const C = new Carousel();
 
 		arr.sort();
-		let output = '<?xml version="1.0" encoding="utf-8"?><Box xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><ObjectType>ISBoxer_Toolkit.Configs.WoWMacroSet</ObjectType><SerializedObject>&lt;?xml version="1.0" encoding="utf-8"?&gt;&lt;WoWMacroSet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;&lt;Name&gt;' + cls + '&lt;/Name&gt;&lt;Description&gt;generated with Beeq\'s Ultimate Macro Set Generator v' + version + '&lt;/Description&gt;&lt;WoWMacros&gt;';
+		let output = '<?xml version="1.0" encoding="utf-8"?><Box xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><ObjectType>ISBoxer_Toolkit.Configs.WoWMacroSet</ObjectType><SerializedObject>&lt;?xml version="1.0" encoding="utf-8"?&gt;&lt;WoWMacroSet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;&lt;Name&gt;bumg-' + cls + '&lt;/Name&gt;&lt;Description&gt;generated with Beeq\'s Ultimate Macro Set Generator v' + version + '&lt;/Description&gt;&lt;WoWMacros&gt;';
 		arr.forEach ( function ( ability )
 		{
-			output += '&lt;WoWMacro&gt;&lt;MacroCommands&gt;/cast [nochanneling] ' + ability + '&lt;/MacroCommands&gt;&lt;ColloquialName&gt;' + ability + '&lt;/ColloquialName&gt;&lt;Combo&gt;&lt;Combo&gt;&lt;/Combo&gt;';
+			output += '&lt;WoWMacro&gt;&lt;MacroCommands&gt;/cast [nochanneling] !' + ability + '&lt;/MacroCommands&gt;&lt;ColloquialName&gt;' + ability + '&lt;/ColloquialName&gt;&lt;Combo&gt;&lt;Combo&gt;&lt;/Combo&gt;';
 			output += '&lt;Modifiers&gt;' + C.modifiers() + '&lt;/Modifiers&gt;';
 			output += '&lt;Key&gt;&lt;Key&gt;&lt;/Key&gt;&lt;Code&gt;' + C.keyCode() + '&lt;/Code&gt;&lt;/Key&gt;&lt;/Combo&gt;&lt;AllowCustomModifiers /&gt;&lt;/WoWMacro&gt;';
 			C.nextKey();
@@ -78,7 +87,7 @@ function Magic( type )
 	}
 
 	}).catch(function (error) {
-	    console.log( "Well, something's broken" );
+	    console.log( "This is general and very useful error message" );
 	});
 }
 
@@ -105,30 +114,53 @@ function Carousel()
 	new Key ( 78 );  // num pad +
 	new Key ( 83 );  // num pad ,
 	new Key ( 309 ); // num pad /
+	new Key ( 329 ); // pg up
+	new Key ( 337 ); // pg dn
+	new Key ( 327 ); // home
+	new Key ( 335 ); // end
+	new Key ( 338 ); // insert
+	new Key ( 339 ); // delete
+	new Key ( 59 ); // F1
+	new Key ( 60 ); // F2
+	new Key ( 61 ); // F3
+	new Key ( 62 ); // F4
+	new Key ( 63 ); // F5
+	new Key ( 64 ); // F6
+	new Key ( 65 ); // F7
+	new Key ( 66 ); // F8
+	new Key ( 67 ); // F9
 
+	
 
 	function Key( code )
 	{
 		this.code = code;
-
 		self.keys.push ( this );
 	}
 
 	this.nextKey = function()
 	{
 		++self.keyIndex;
-		self.keyIndex = self.keyIndex % self.keys.length;
-		if ( self.keyIndex == 0 ) { self.nextMod(); }
-	}
 
-	this.nextMod = function()
-	{
-		++self.modIndex;
+		if ( self.keyCode() == 339 && self.modIndex == 2 ) { ++self.keyIndex; } // skip Ctrl+Alt+Del
+		if ( self.keyCode() == 339 && self.modIndex == 6 ) { ++self.keyIndex; } // skip Ctrl+Shift+Alt+Del
+
+		self.keyIndex = self.keyIndex % self.keys.length;
+		if ( self.keyIndex == 0 ) { ++self.modIndex }
 	}
 
 	this.keyCode = function()
 	{
-		return self.keys[ self.keyIndex ].code;
+		let code;
+		try
+		{
+			code = self.keys[ self.keyIndex ].code;
+		}
+		catch ( e )
+		{
+			code = self.keys[ 0 ].code;
+		}	
+		return code;
 	}
 
 	this.modifiers = function()
