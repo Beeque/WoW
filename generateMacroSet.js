@@ -24,6 +24,7 @@ const version = '1.02';
 const debug = 0;
 const axios = require('axios');
 const colors = require('colors');
+//var sleep = require('sleep'); // To avoid hammering on the wowhead servers when loading everything
 
 const classChoices = 
 [
@@ -42,7 +43,8 @@ const specChoices =
 var arr = [];
 var args = process.argv.slice(2);
 
-if (args.length < 3)
+
+if (args.length < 2)
 {
 	printUsage();
 	console.error("Required parameters missing: Options, Class, Spec".bold.red);
@@ -52,17 +54,13 @@ else
 {
 	var options = args[0].toLowerCase();
 	var cls = args[1].toLowerCase(); 
-	var spec = args[2].toLowerCase();
-	var keys = "full";
-	if(args[3])
-	{
-		keys = args[3].toLowerCase();	
-	}
+	var spec = args[2] ? args[2].toLowerCase() : null;
+	var keys = args[3] ? args[3].toLowerCase() : "full";	
 
-	if(classChoices.indexOf(cls) < 0 || specChoices.indexOf(spec) < 0)
+	if(classChoices.indexOf(cls) < 0)
 	{
 		printUsage();
-		console.error("Class and Spec required as parameter 2 and 3".bold.red);
+		console.error("Please specify which class to load".bold.red);
 		process.exitCode = 1;
 	}
 	else
@@ -76,10 +74,11 @@ function printUsage()
 {
 	console.clear();
 	console.error("Beeq's Ultimate Macro Set Generator".bold.cyan);
-	console.error("node .\\generateMacroSet.js ".white + "(options) (class) (spec)".yellow + " [key-options]".green + " > your-file-name.xml".white);
+	console.error("node .\\generateMacroSet.js ".white + "(options) (class)".yellow + " [spec] [key-options]".green + " > your-file-name.xml".white);
 	console.error("");
 	console.error("usage examples:".cyan);
 	console.error("node .\\generateMacroSet.js ALL Warlock Affliction > warlock-affliction.xml".gray);
+	console.error("node .\\generateMacroSet.js ASTP Priest > priest.xml".gray);
 	console.error("node .\\generateMacroSet.js AST Monk Mistweaver NOFUNC > monk-mistweaver.xml".gray);
 	console.error("node .\\generateMacroSet.js ASTCNP Demon-Hunter Havoc > dh-havoc.xml".gray);
 	console.error("");
@@ -98,7 +97,7 @@ function printUsage()
 	console.error("--- CLASSES (Required) ---".yellow);
 	console.error(classChoices.join(", ").gray);
 	console.error("");
-	console.error("--- SPECS (Required) ---".yellow);
+	console.error("--- SPECS (Optional) ---".green);
 	console.error(specChoices.join(", ").gray);
 	console.error("");
 	console.error("--- Key Options (Optional) ---".green);
@@ -126,10 +125,12 @@ function main(options, cls, spec, keyOptions)
 		let url = 'https://www.wowhead.com/spells/' + type + '/' + cls;
 
 		// Abilities do not require a spec subcategory
-		if (spec && (type.indexOf('abilities') >= 0 || type.indexOf('anima') >= 0))
+		if (spec && type.indexOf('abilities') < 0 && type.indexOf('anima') < 0)
 		{
 			url += '/' + spec.toLowerCase();
 		}
+
+		var macroName = cls + (spec ? '-' + spec : '');
 		
 		url += '?filter=50;2;0#0+1+20';
 		if ( debug )
@@ -176,7 +177,7 @@ function main(options, cls, spec, keyOptions)
 			const C = new Carousel();
 
 			arr.sort();
-			let output = '<?xml version="1.0" encoding="utf-8"?><Box xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><ObjectType>ISBoxer_Toolkit.Configs.WoWMacroSet</ObjectType><SerializedObject>&lt;?xml version="1.0" encoding="utf-8"?&gt;&lt;WoWMacroSet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;&lt;Name&gt;bumg-' + cls + '-' + spec + '&lt;/Name&gt;&lt;Description&gt;generated with Beeq\'s Ultimate Macro Set Generator v' + version + '&lt;/Description&gt;&lt;WoWMacros&gt;';
+			let output = '<?xml version="1.0" encoding="utf-8"?><Box xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><ObjectType>ISBoxer_Toolkit.Configs.WoWMacroSet</ObjectType><SerializedObject>&lt;?xml version="1.0" encoding="utf-8"?&gt;&lt;WoWMacroSet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;&lt;Name&gt;bumg-' + macroName + '&lt;/Name&gt;&lt;Description&gt;generated with Beeq\'s Ultimate Macro Set Generator v' + version + '&lt;/Description&gt;&lt;WoWMacros&gt;';
 			arr.forEach ( function ( ability )
 			{
 				output += '&lt;WoWMacro&gt;&lt;MacroCommands&gt;/cast [nochanneling] !' + ability + '&lt;/MacroCommands&gt;&lt;ColloquialName&gt;' + ability + '&lt;/ColloquialName&gt;&lt;Combo&gt;&lt;Combo&gt;&lt;/Combo&gt;';
