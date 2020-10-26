@@ -23,6 +23,8 @@ const version = '1.02';
 
 const debug = 0;
 const axios = require('axios');
+const colors = require('colors');
+
 const classChoices = [
 	'death-knight', 'demon-hunter', 'druid', 'hunter', 'mage', 'monk', 
 	'paladin', 'priest', 'rogue', 'shaman', 'warlock', 'warrior'
@@ -39,8 +41,8 @@ var arr = [];
 var args = process.argv.slice(2);
 
 if (args.length < 3) {
-	console.error("Required parameters missing: Options, Class, Spec");
 	printUsage();
+	console.error("Required parameters missing: Options, Class, Spec".bold.red);
 	process.exitCode = 1;
 }
 else {
@@ -53,8 +55,8 @@ else {
 	}
 
 	if(classChoices.indexOf(cls) < 0 || specChoices.indexOf(spec) < 0) {
-		console.error("Class and Spec required as parameter 2 and 3");
 		printUsage();
+		console.error("Class and Spec required as parameter 2 and 3".bold.red);
 		process.exitCode = 1;
 	}
 	else {
@@ -64,35 +66,38 @@ else {
 
 
 function printUsage() {
-	console.error("Beeq's Ultimate Macro Set Generator");
-	console.error("node .\generateMacroSet.js (options) (class) (spec) [key-options] > your-file-name.xml");
+	console.clear();
+	console.error("Beeq's Ultimate Macro Set Generator".bold.cyan);
+	console.error("node .\\generateMacroSet.js ".white + "(options) (class) (spec)".yellow + " [key-options]".green + " > your-file-name.xml".white);
 	console.error("");
-	console.error("usage example:");
-	console.error("node .\generateMacroSet.js ALL Warlock Affliction > warlock-affliction.xml");
-	console.error("node .\generateMacroSet.js AST Monk Mistweaver NOFUNC > monk-mistweaver.xml");
-	console.error("node .\generateMacroSet.js ASTCNP Demon-Hunter Havoc > dh-havoc.xml");
+	console.error("usage examples:".cyan);
+	console.error("node .\\generateMacroSet.js ALL Warlock Affliction > warlock-affliction.xml".gray);
+	console.error("node .\\generateMacroSet.js AST Monk Mistweaver NOFUNC > monk-mistweaver.xml".gray);
+	console.error("node .\\generateMacroSet.js ASTCNP Demon-Hunter Havoc > dh-havoc.xml".gray);
 	console.error("");
-	console.error("--- OPTIONS ---");
-	console.error("T - Talents");
-	console.error("P - PVP");
-	console.error("S - Specialization");
-	console.error("A - Abilities");
-	console.error("C - Covenant Abilities");
-	console.error("N - Anima Powers");
-	console.error("ALL - All of the above");
+	console.error("--- OPTIONS (Required) ---".yellow);
+	console.error("T - Talents".gray);
+	console.error("P - PVP".gray);
+	console.error("S - Specialization".gray);
+	console.error("A - Abilities".gray);
+	console.error("C - Covenant Abilities".gray);
+	console.error("N - Anima Powers".gray);
+	console.error("ALL - All of the above".gray);
 	console.error("");
-	console.error("If selecting specific types of skills, combine individual characters (i.e. TSA, TPSA, TSACN)");
+	console.error("If selecting specific types of skills, combine individual characters (i.e. TSA, TPSA, TSACN)".white);
+	console.error("Use ".white + "ALL".yellow + " to include all skills".white);
 	console.error("");
-	console.error("--- CLASSES ---");
-	console.error(classChoices.join(", "));
+	console.error("--- CLASSES (Required) ---".yellow);
+	console.error(classChoices.join(", ").gray);
 	console.error("");
-	console.error("--- SPECS ---");
-	console.error(specChoices.join(", "));
+	console.error("--- SPECS (Required) ---".yellow);
+	console.error(specChoices.join(", ").gray);
 	console.error("");
-	console.error("--- Key Options ---");
-	console.error("Optional parameter.  Leave blank to use: ");
-	console.error("NUM keys, F1-F9, INS, DEL, HOME, END, PGUP, PGDN by default");
-	console.error("Pass NOFUNC to exclude function keys.");
+	console.error("--- Key Options (Optional) ---".green);
+	console.error("Leave blank to use modifiers (ctrl,alt,shift) with the following keys: ".gray);
+	console.error("NUM keys, F1-F9, INS, DEL, HOME, END, PGUP, PGDN by default".gray);
+	console.error("");
+	console.error("Pass NOFUNC to exclude the F1-F9 keys.".gray);
 	console.error("");
 
 }
