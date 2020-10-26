@@ -126,7 +126,7 @@ function main(options, cls, spec, keyOptions)
 		let url = 'https://www.wowhead.com/spells/' + type + '/' + cls;
 
 		// Abilities do not require a spec subcategory
-		if (spec && (type.indexOf('abilities') >= 0 || type.indexOf('anima' >= 0)))
+		if (spec && (type.indexOf('abilities') >= 0 || type.indexOf('anima') >= 0))
 		{
 			url += '/' + spec.toLowerCase();
 		}
