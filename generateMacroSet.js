@@ -95,7 +95,7 @@ function printUsage() {
 	console.error("");
 	console.error("--- Key Options (Optional) ---".green);
 	console.error("Leave blank to use modifiers (ctrl,alt,shift) with the following keys: ".gray);
-	console.error("NUM keys, F1-F9, INS, DEL, HOME, END, PGUP, PGDN by default".gray);
+	console.error("NUM keys, F1-F9, INS, DEL, HOME, END, PGUP, PGDN".gray);
 	console.error("");
 	console.error("Pass NOFUNC to exclude the F1-F9 keys.".gray);
 	console.error("");
