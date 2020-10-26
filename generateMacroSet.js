@@ -25,11 +25,13 @@ const debug = 0;
 const axios = require('axios');
 const colors = require('colors');
 
-const classChoices = [
+const classChoices = 
+[
 	'death-knight', 'demon-hunter', 'druid', 'hunter', 'mage', 'monk', 
 	'paladin', 'priest', 'rogue', 'shaman', 'warlock', 'warrior'
 ].sort();
-const specChoices = [
+const specChoices = 
+[
 	'blood', 'frost', 'unholy', 'havoc', 'vengeance', 'restoration', 'guardian',
 	'feral', 'balance', 'beast-mastery', 'marksmanship', 'survival', 'arcane', 'fire',
 	'brewmaster', 'mistweaver', 'windwalker', 'holy', 'protection', 'retribution',
@@ -40,32 +42,38 @@ const specChoices = [
 var arr = [];
 var args = process.argv.slice(2);
 
-if (args.length < 3) {
+if (args.length < 3)
+{
 	printUsage();
 	console.error("Required parameters missing: Options, Class, Spec".bold.red);
 	process.exitCode = 1;
 }
-else {
+else
+{
 	var options = args[0].toLowerCase();
 	var cls = args[1].toLowerCase(); 
-	var spec = args[2];
+	var spec = args[2].toLowerCase();
 	var keys = "full";
-	if(args[3]) {
+	if(args[3])
+	{
 		keys = args[3].toLowerCase();	
 	}
 
-	if(classChoices.indexOf(cls) < 0 || specChoices.indexOf(spec) < 0) {
+	if(classChoices.indexOf(cls) < 0 || specChoices.indexOf(spec) < 0)
+	{
 		printUsage();
 		console.error("Class and Spec required as parameter 2 and 3".bold.red);
 		process.exitCode = 1;
 	}
-	else {
+	else
+	{
 		main(options, cls, spec, keys);
 	}
 }
 
 
-function printUsage() {
+function printUsage()
+{
 	console.clear();
 	console.error("Beeq's Ultimate Macro Set Generator".bold.cyan);
 	console.error("node .\\generateMacroSet.js ".white + "(options) (class) (spec)".yellow + " [key-options]".green + " > your-file-name.xml".white);
@@ -99,10 +107,10 @@ function printUsage() {
 	console.error("");
 	console.error("Pass NOFUNC to exclude the F1-F9 keys.".gray);
 	console.error("");
-
 }
 
-function main(options, cls, spec, keyOptions) {
+function main(options, cls, spec, keyOptions) 
+{
 	var tasks = 0;
 	if(options == "ALL") { options = "astcnp"; }
 	if(options.indexOf("a") >= 0) { new Magic ( 'abilities' ); }
@@ -118,7 +126,8 @@ function main(options, cls, spec, keyOptions) {
 		let url = 'https://www.wowhead.com/spells/' + type + '/' + cls;
 
 		// Abilities do not require a spec subcategory
-		if (spec && (type.indexOf('abilities') >= 0 || type.indexOf('anima' >= 0))) {
+		if (spec && (type.indexOf('abilities') >= 0 || type.indexOf('anima' >= 0)))
+		{
 			url += '/' + spec.toLowerCase();
 		}
 		
@@ -213,7 +222,8 @@ function main(options, cls, spec, keyOptions) {
 		new Key ( 335 ); // end
 		new Key ( 338 ); // insert
 		new Key ( 339 ); // delete
-		if (keyOptions != "nofunc") {
+		if (keyOptions != "nofunc") 
+		{
 			new Key ( 59 ); // F1
 			new Key ( 60 ); // F2
 			new Key ( 61 ); // F3
