@@ -1,11 +1,11 @@
 ## Beeq's Ultimate Macro Set Generator
-`node .\generateMacroSet.js (options) (class) [spec] [key-options] > your-file-name.xml`
+  `node .\generateMacroSet.js (options) (class) [spec] [key-options] > your-file-name.xml`
 
 ### Usage examples:
-`node .\generateMacroSet.js ALL Warlock Affliction > warlock-affliction.xml`
-`node .\generateMacroSet.js ASTP Priest > priest.xml`
-`node .\generateMacroSet.js AST Monk Mistweaver NOFUNC > monk-mistweaver.xml`
-`node .\generateMacroSet.js ASTCNP Demon-Hunter Havoc > dh-havoc.xml`
+  `node .\generateMacroSet.js ALL Warlock Affliction > warlock-affliction.xml`
+  `node .\generateMacroSet.js ASTP Priest > priest.xml`
+  `node .\generateMacroSet.js AST Monk Mistweaver NOFUNC > monk-mistweaver.xml`
+  `node .\generateMacroSet.js ASTCNP Demon-Hunter Havoc > dh-havoc.xml`
 
 #### OPTIONS (Required)
 - T - Talents
