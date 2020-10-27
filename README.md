@@ -32,8 +32,9 @@ NUM keys, F1-F9, HOME, END, PGUP, PGDN
 Pass NOFUNC to exclude the F1-F9 keys.
 
 ##### Regenerating the XML
-If you want to regenerate everything this repo has a PowerShell script that can do that.
-Please note that you will need to modify *GenerateAll.ps1* and update the value of _$nodejs_ with the path to where you have NodeJS installed.
+If you want to regenerate the XML files in the Specs/ folder, you can use the included PowerShell script, *GenerateAll.ps1*.
+
+Please note that you will need to modify the first line of this file.  Set the value of _$nodejs_ to where your Node.exe location.
 
 Anima Powers are not included in the ALL XML files. If you want these included change
 _$maxSkills = "TPSAC"_ to _$maxSkills = "TPSACN"_
