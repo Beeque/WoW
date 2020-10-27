@@ -22,6 +22,17 @@
 const version = '1.02';
 // In Powershell set $Env:WOWDEBUG = 1 to enable debug
 const debug = process.env.WOWDEBUG == 1 ? 1 : 0;
+try {
+	let axiosTest = require('axios');
+	let colorsTest = require('colors');
+}
+catch (e) {
+	console.log(e);
+	console.log("");
+	console.log("This script requires the axios and colors libraries.");
+	console.log("Run: npm install axios colors");
+	process.exit(1);
+}
 const axios = require('axios');
 const colors = require('colors');
 
