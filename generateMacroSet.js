@@ -49,6 +49,21 @@ const specChoices =
 	'discipline', 'shadow', 'assassination', 'outlaw', 'subtlety', 'elemental',
 	'enhancement', 'affliction', 'demonology', 'destruction', 'arms', 'fury'
 ].sort();
+const specIds = 
+{
+	"death-knight_blood": 250, "death-knight_frost": 251, "death-knight_unholy": 252,
+	"demon-hunter_havoc": 577, "demon-hunter_vengeance": 581,
+	"druid_balance": 102, "druid_feral": 103, "druid_guardian": 104, "druid_restoration": 105,
+	"hunter_beast-mastery": 253, "hunter_marksmanship": 254, "hunter_survival": 255, 
+	"mage_arcane": 62, "mage_fire": 63, "mage_frost": 64, 
+	"monk_mistweaver":270, "monk_windwalker":268, "monk_brewmaster": 268,
+	"paladin_holy": 65, "paladin_protection": 66, "paladin_retribution": 70,
+	"priest_discipline": 256, "priest_holy": 257, "priest_shadow": 258,
+	"rogue_assassination": 259, "rogue_outlaw": 260, "rogue_subtlety": 261,
+	"shaman_elemental": 262, "shaman_enhancement": 263, "shaman_restoration": 264,
+	"warlock_affliction": 265, "warlock_demonology":266, "warlock_destruction": 267,
+	"warrior_arms": 71, "warrior_fury": 72, "warrior_protection": 73
+};
 
 var arr = [];
 var args = process.argv.slice(2);
@@ -95,10 +110,10 @@ function main(options, cls, spec, keyOptions)
 		++tasks;
 		let url = 'https://www.wowhead.com/spells/' + type + '/' + cls;
 
-		// Abilities do not require a spec subcategory
-		if (spec && type.indexOf('abilities') < 0 && type.indexOf('anima') < 0)
+		let specId = 0;
+		if (spec)
 		{
-			url += '/' + spec.toLowerCase();
+			specId = specIds[cls+"_"+spec];
 		}
 
 		var macroName = cls + (spec ? '-' + spec : '');
@@ -136,7 +151,18 @@ function main(options, cls, spec, keyOptions)
 				{
 					if ( r.name.indexOf("Teleport:") < 0 )
 					{
-						arr.push ( r.name );
+						if (!spec)
+						{
+							arr.push ( r.name );
+						}
+						else if (specId && specId > 0)
+						{
+							if(debug) { console.log (r); }
+							if (!r.talentspec || r.talentspec.indexOf(specId) >= 0)
+							{
+								arr.push ( r.name );
+							}
+						}
 					}
 				}
 			}
@@ -291,5 +317,7 @@ function printUsage()
 	console.error("");
 	console.error("Pass NOFUNC to exclude the F1-F9 keys.".gray);
 	console.error("");
+	console.error("");
+
 }
 
