@@ -17,9 +17,11 @@
 	1.01 -	added searches for Covenant Abilities and Anima Powers
 	1.02 -	added various key codes ( pg up, pg dn, home, end, insert. delete, f1-f9 ) for not running out modifiers
 		added exclamation marks into the macros. /cast Greater Invisibility -> /cast !Greater Invisibility
+	1.03 -  added a lot more key codes, also removed some, for better compatibility.
+		to avoid interferens, Carousel offers double modifiers now at first
 */
 
-const version = '1.02';
+const version = '1.03';
 // In Powershell set $Env:WOWDEBUG = 1 to enable debug
 const debug = process.env.WOWDEBUG == 1 ? 1 : 0;
 try {
@@ -215,25 +217,57 @@ function Carousel(keyOptions)
 	new Key ( 78 );  // num pad +
 	new Key ( 83 );  // num pad ,
 	new Key ( 309 ); // num pad /
-	new Key ( 329 ); // pg up
-	new Key ( 337 ); // pg dn
-	new Key ( 327 ); // home
-	new Key ( 335 ); // end
-	//new Key ( 338 ); // insert
-	//new Key ( 339 ); // delete
+	
+	// new Key ( 329 ); // pg up
+	// new Key ( 337 ); // pg dn
+	// new Key ( 327 ); // home
+	// new Key ( 335 ); // end
+	// new Key ( 338 ); // insert
+	// new Key ( 339 ); // delete
+
 	if (keyOptions != "nofunc") 
 	{
 		new Key ( 59 ); // F1
 		new Key ( 60 ); // F2
 		new Key ( 61 ); // F3
-		new Key ( 62 ); // F4
+		// new Key ( 62 ); // F4 - bypass possible Alt+F4 problems (=
 		new Key ( 63 ); // F5
 		new Key ( 64 ); // F6
 		new Key ( 65 ); // F7
-		new Key ( 66 ); // F8
-		new Key ( 67 ); // F9
+		// new Key ( 66 ); // F8 reserved for FTL Target by default
+		// new Key ( 67 ); // F9 reserved for FTL Assist by default
 	}
 
+		new Key ( 19 ); // R
+		new Key ( 20 ); // T
+		new Key ( 21 ); // Y
+		new Key ( 22 ); // U
+		new Key ( 23 ); // I
+		new Key ( 24 ); // O
+		new Key ( 25 ); // P
+		new Key ( 26 ); // Å
+		new Key ( 27 ); // treema
+
+		new Key ( 33 ); // F
+		new Key ( 34 ); // G
+		new Key ( 35 ); // H
+		new Key ( 36 ); // J
+		new Key ( 37 ); // K
+		new Key ( 38 ); // L
+		new Key ( 39 ); // Ö
+		new Key ( 40 ); // Ä
+
+		new Key ( 44 ); // Z
+		new Key ( 45 ); // X
+		new Key ( 46 ); // C
+		new Key ( 47 ); // V
+		new Key ( 48 ); // B
+		new Key ( 49 ); // N
+		new Key ( 50 ); // M
+		new Key ( 51 ); // ,
+		new Key ( 52 ); // .
+		new Key ( 53 ); // -
+	
 	function Key( code )
 	{
 		this.code = code;
@@ -244,7 +278,8 @@ function Carousel(keyOptions)
 	{
 		++self.keyIndex;
 
-		if ( self.keyCode() == 339 && self.modIndex == 2 ) { ++self.keyIndex; } // skip Ctrl+Alt+Del
+		// del key is disabled anyway so..
+		// if ( self.keyCode() == 339 && self.modIndex == 2 ) { ++self.keyIndex; } // skip Ctrl+Alt+Del
 		// if ( self.keyCode() == 339 && self.modIndex == 6 ) { ++self.keyIndex; } // skip Ctrl+Shift+Alt+Del
 
 		self.keyIndex = self.keyIndex % self.keys.length;
@@ -269,10 +304,10 @@ function Carousel(keyOptions)
 	{
 		switch ( self.modIndex )
 		{
-			case 0: return 'Ctrl';
-			case 1: return 'Ctrl Shift';
-			case 2: return 'Ctrl Alt';
-			case 3: return 'Shift Alt';
+			case 0: return 'Ctrl Shift';
+			case 1: return 'Ctrl Alt';
+			case 2: return 'Shift Alt';
+			case 3: return 'Ctrl';
 			case 4: return 'Alt';
 			case 5: return 'Shift';
 			case 6: return 'Ctrl Shift Alt';
