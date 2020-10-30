@@ -1,5 +1,5 @@
 /*
-	Beeq's Ultimate Macro Set Generator
+	Ultimate Macro Set Generator by Beeq & Wootenblatz
 	usage example:
 	node .\generateMacroSet.js ALL Warlock Affliction > blablahh.txt
 	node .\generateMacroSet.js AST Monk Mistweaver > blablahh.txt
@@ -174,7 +174,7 @@ function main(options, cls, spec, keyOptions)
 			const C = new Carousel(keyOptions);
 
 			arr.sort();
-			let output = '<?xml version="1.0" encoding="utf-8"?><Box xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><ObjectType>ISBoxer_Toolkit.Configs.WoWMacroSet</ObjectType><SerializedObject>&lt;?xml version="1.0" encoding="utf-8"?&gt;&lt;WoWMacroSet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;&lt;Name&gt;bumg-' + macroName + '&lt;/Name&gt;&lt;Description&gt;generated with Beeq\'s Ultimate Macro Set Generator v' + version + '&lt;/Description&gt;&lt;WoWMacros&gt;';
+			let output = '<?xml version="1.0" encoding="utf-8"?><Box xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><ObjectType>ISBoxer_Toolkit.Configs.WoWMacroSet</ObjectType><SerializedObject>&lt;?xml version="1.0" encoding="utf-8"?&gt;&lt;WoWMacroSet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;&lt;Name&gt;bumg-' + macroName + '&lt;/Name&gt;&lt;Description&gt;generated with Ultimate Macro Set Generator v' + version + '&lt;/Description&gt;&lt;WoWMacros&gt;';
 			arr.forEach ( function ( ability )
 			{
 				output += '&lt;WoWMacro&gt;&lt;MacroCommands&gt;/cast [nochanneling] !' + ability + '&lt;/MacroCommands&gt;&lt;ColloquialName&gt;' + ability + '&lt;/ColloquialName&gt;&lt;Combo&gt;&lt;Combo&gt;&lt;/Combo&gt;';
@@ -284,7 +284,7 @@ function Carousel(keyOptions)
 function printUsage()
 {
 	console.clear();
-	console.error("Beeq's Ultimate Macro Set Generator".bold.cyan);
+	console.error("Ultimate Macro Set Generator".bold.cyan);
 	console.error("node .\\generateMacroSet.js ".white + "(options) (class)".yellow + " [spec] [key-options]".green + " > your-file-name.xml".white);
 	console.error("");
 	console.error("usage examples:".cyan);
