@@ -1,4 +1,4 @@
-## Beeq's Ultimate Macro Set Generator
+## Ultimate Macro Set Generator by Beeq & Wootenblatz
   `node .\generateMacroSet.js (options) (class) [spec] [key-options] > your-file-name.xml`
 
 ### Usage examples:
